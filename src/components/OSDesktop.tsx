@@ -178,7 +178,7 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
                <motion.span 
                  className="absolute -left-6 top-2 text-[#ff3333] text-sm"
                  animate={{ opacity: [1, 0, 1] }}
-                 transition={{ repeat: Infinity, duration: 1.5, ease: "steps(2)" }}
+                 transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
                >
                  ■
                </motion.span>
