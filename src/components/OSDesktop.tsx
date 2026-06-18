@@ -170,7 +170,7 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
         </header>
 
         {/* Main Content Grid */}
-        <main className="flex-1 grid grid-cols-12 gap-8 items-center h-full min-h-0">
+        <main className="flex-1 flex flex-col md:grid md:grid-cols-12 gap-8 md:items-center h-full min-h-0 overflow-y-auto md:overflow-hidden pb-20 md:pb-0">
           
           {/* Left Column: Huge Brutalist Text */}
           <div className="col-span-12 md:col-span-5 flex flex-col justify-center">
@@ -182,7 +182,7 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
                >
                  ■
                </motion.span>
-               <h2 className="text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tighter leading-[0.85] whitespace-pre-line break-words max-w-full">
+               <h2 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tighter leading-[0.85] whitespace-pre-line break-words max-w-full">
                  <ScrambleText text={titleText} />
                </h2>
             </div>
@@ -237,17 +237,17 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
                     key={project.id}
                     whileHover={!isProject ? { x: 10 } : {}}
                     onClick={() => !isProject && enterProject(project.id)}
-                    className={`group relative flex flex-col md:flex-row justify-between items-start md:items-center py-4 shrink-0 transition-colors duration-1000 ${isProject ? 'border-transparent' : 'border-b border-current cursor-pointer'}`}
+                    className={`group relative flex flex-row justify-between items-center py-4 shrink-0 transition-colors duration-1000 ${isProject ? 'border-transparent' : 'border-b border-current cursor-pointer'}`}
                   >
                     {!isProject && (
                       <div className="absolute -left-4 w-2 h-2 bg-[#ff3333] opacity-0 group-hover:opacity-100 transition-opacity z-50" />
                     )}
                     
-                    <span className="font-mono text-sm opacity-50 mb-2 md:mb-0 w-24">
+                    <span className="font-mono text-xs md:text-sm opacity-50 w-20 md:w-24 shrink-0">
                       <ScrambleText text={project.id} scrambleToEmpty={isProject} />
                     </span>
                     
-                    <span className="text-2xl md:text-4xl font-bold uppercase tracking-tight flex-1">
+                    <span className="text-xl sm:text-2xl md:text-4xl font-bold uppercase tracking-tight flex-1 truncate pr-4">
                       <ScrambleText text={project.title.replace(/\n/g, ' ')} scrambleToEmpty={isProject} />
                     </span>
                     
