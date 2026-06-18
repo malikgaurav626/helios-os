@@ -24,6 +24,9 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
   // Sequence the project entry
   useEffect(() => {
     if (activeProjectId && !isExiting) {
+      if (typeof document !== 'undefined') {
+        document.getElementById('main-scroll')?.scrollTo({ top: 0, behavior: 'smooth' })
+      }
       const timer = setTimeout(() => setShowDetails(true), 2000)
       return () => clearTimeout(timer)
     }
@@ -54,6 +57,8 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
     let isActive = true
 
     const runOnce = async () => {
+      if (typeof window !== 'undefined' && window.innerWidth < 768) return
+      
       await new Promise(r => setTimeout(r, 2500)) // Initial wait
 
       if (isActive && !activeProjectId && !hasScrolled) {
@@ -107,11 +112,13 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <motion.circle 
+            initial={preset.c1}
             animate={preset.c1} 
             transition={{ duration: 2, ease: "easeInOut" }}
             fill="none" stroke="currentColor" strokeWidth="1" 
           />
           <motion.circle 
+            initial={preset.c2}
             animate={preset.c2} 
             transition={{ duration: 2.5, ease: "easeInOut" }}
             fill="none" stroke="currentColor" strokeWidth="1" 
@@ -125,10 +132,10 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
-        className="relative z-10 p-4 md:p-12 w-full h-full flex flex-col"
+        className="relative z-10 p-4 md:p-12 w-full h-full flex flex-col overflow-y-auto md:overflow-hidden"
       >
         {/* Top Header */}
-        <header className="flex justify-between items-start border-b border-current pb-4 mb-16 shrink-0">
+        <header className="flex justify-between items-start border-b border-current pb-4 mb-6 md:mb-16 shrink-0">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 md:w-12 md:h-12 border-2 border-current flex items-center justify-center p-1 shrink-0">
               <motion.div 
@@ -170,19 +177,19 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
         </header>
 
         {/* Main Content Grid */}
-        <main className="flex-1 flex flex-col md:grid md:grid-cols-12 gap-8 md:items-center h-full min-h-0 overflow-y-auto md:overflow-hidden pb-20 md:pb-0">
+        <main id="main-scroll" className="flex-1 flex flex-col md:grid md:grid-cols-12 gap-8 md:items-center h-full min-h-0 overflow-y-auto md:overflow-hidden pb-4 md:pb-0">
           
           {/* Left Column: Huge Brutalist Text */}
-          <div className="col-span-12 md:col-span-5 flex flex-col justify-center">
-            <div className="flex flex-col relative w-fit mt-12 mb-12">
+          <div className="col-span-12 md:col-span-5 flex flex-col justify-center shrink-0">
+            <div className="flex flex-col relative w-fit mt-4 mb-6 md:mt-12 md:mb-12 pt-2 md:pt-0 ml-6">
                <motion.span 
-                 className="absolute -left-6 top-2 text-[#ff3333] text-sm"
+                 className="absolute -left-6 top-1 md:top-2 text-[#ff3333] text-sm md:text-base"
                  animate={{ opacity: [1, 0, 1] }}
                  transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
                >
                  ■
                </motion.span>
-               <h2 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tighter leading-[0.85] whitespace-pre-line break-words max-w-full">
+               <h2 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tighter leading-none md:leading-[0.85] whitespace-pre-line break-words max-w-full">
                  <ScrambleText text={titleText} />
                </h2>
             </div>
@@ -207,9 +214,15 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
                       </span>
                     ))}
                     </div>
-                    <div className="flex gap-4 text-xs font-mono tracking-widest mt-2">
+                    <div className="flex flex-wrap gap-4 text-xs font-mono tracking-widest mt-4 items-center">
                       {activeProject.githubUrl && <a href={activeProject.githubUrl} target="_blank" rel="noreferrer" className="opacity-60 hover:opacity-100 transition-colors">[ SOURCE ]</a>}
                       {activeProject.liveUrl && <a href={activeProject.liveUrl} target="_blank" rel="noreferrer" className="text-[#ff3333] opacity-80 hover:opacity-100 transition-colors">[ DEPLOYMENT ]</a>}
+                      <button 
+                        onClick={handleReturnToRegistry} 
+                        className={`border border-current px-4 py-1.5 text-[10px] font-bold tracking-widest transition-colors uppercase select-none pointer-events-auto ${theme === 'light' ? 'hover:bg-black hover:text-white' : 'hover:bg-white hover:text-black'}`}
+                      >
+                        <ScrambleText text="[ RETURN ]" animateOnMount={!isThemeTransition} scrambleToEmpty={isExiting} />
+                      </button>
                     </div>
                   </motion.div>
                 )}
@@ -218,18 +231,18 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
           </div>
 
           {/* Right Column: Project Registry */}
-          <div className="col-span-12 md:col-span-7 flex flex-col justify-end h-full min-h-0 py-8">
-            <div className="border-b border-current mb-4 pb-2 text-xs font-mono uppercase tracking-widest flex justify-between shrink-0">
-              <ScrambleText text="Artifact ID" scrambleToEmpty={isProject} />
-              <ScrambleText text="Designation" scrambleToEmpty={isProject} />
-              <ScrambleText text="Status" scrambleToEmpty={isProject} />
+          <div className="col-span-12 md:col-span-7 flex flex-col justify-end min-h-[60vh] md:min-h-0 md:h-full py-4 md:py-8 shrink-0">
+            <div className="border-b border-current mb-4 pb-2 text-xs font-mono uppercase tracking-widest flex shrink-0">
+              <span className="w-20 md:w-24 shrink-0"><ScrambleText text="Artifact ID" scrambleToEmpty={isProject} /></span>
+              <span className="flex-1 text-right md:text-left"><ScrambleText text="Designation" scrambleToEmpty={isProject} /></span>
+              <span className="hidden md:block min-w-[6rem] text-right"><ScrambleText text="Status" scrambleToEmpty={isProject} /></span>
             </div>
 
-            <div className="relative flex flex-col flex-1 min-h-0 pb-12">
+            <div className="relative flex flex-col flex-1 min-h-0 md:pb-12">
               
               <div 
                 onScroll={handleUserScroll}
-                className={`absolute inset-0 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${isProject ? 'pointer-events-none' : ''}`}
+                className={`[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${isProject ? 'absolute inset-0 pointer-events-none' : 'relative md:absolute md:inset-0 md:overflow-y-auto'}`}
               >
                 <motion.div animate={listControls} className="flex flex-col">
                 {PROJECTS.map((project) => (
@@ -247,7 +260,7 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
                       <ScrambleText text={project.id} scrambleToEmpty={isProject} />
                     </span>
                     
-                    <span className="text-xl sm:text-2xl md:text-4xl font-bold uppercase tracking-tight flex-1 truncate pr-4">
+                    <span className="text-xl sm:text-2xl md:text-4xl font-bold uppercase tracking-tight flex-1 text-right md:text-left truncate md:pr-4">
                       <ScrambleText text={project.title.replace(/\n/g, ' ')} scrambleToEmpty={isProject} />
                     </span>
                     
@@ -256,7 +269,7 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
                     </span>
 
                     {/* Status Box */}
-                    <div className="flex justify-end min-w-[6rem] shrink-0">
+                    <div className="hidden md:flex justify-end min-w-[6rem] shrink-0">
                       <motion.div 
                         animate={{ opacity: isProject ? 0 : 1 }}
                         className="flex items-center justify-center h-6 pl-2 pr-4 min-w-[3rem] bg-black/20 dark:bg-white/20 group-hover:bg-[#ff3333] dark:group-hover:bg-[#ff3333] transition-colors"
@@ -277,7 +290,7 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
                     initial={{ opacity: 1 }} 
                     animate={{ opacity: 1 }} 
                     exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                    className="absolute inset-0 pt-4 pb-12 flex flex-col gap-6 pointer-events-auto overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                    className="pt-4 pb-12 flex flex-col gap-6 pointer-events-auto md:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative md:absolute md:inset-0"
                   >
                     <h3 className="text-xl font-bold tracking-widest uppercase border-b border-current pb-2 mb-4 opacity-80">
                       <ScrambleText 
@@ -297,12 +310,6 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
                         </p>
                       </div>
                     ))}
-                    <button 
-                      onClick={handleReturnToRegistry} 
-                      className={`mt-8 self-start border border-current px-6 py-2 text-xs font-bold tracking-widest transition-colors uppercase select-none pointer-events-auto ${theme === 'light' ? 'hover:bg-black hover:text-white' : 'hover:bg-white hover:text-black'}`}
-                    >
-                      <ScrambleText text="[ RETURN_TO_REGISTRY ]" animateOnMount={!isThemeTransition} scrambleToEmpty={isExiting} />
-                    </button>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -312,13 +319,13 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
         </main>
 
         {/* Footer */}
-        <footer className={`mt-auto pt-8 flex justify-between items-end border-t ${theme === 'light' ? 'border-black/50' : 'border-white/50'} text-xs font-mono uppercase tracking-widest`}>
+        <footer className={`mt-auto pt-8 flex justify-between items-end border-t ${theme === 'light' ? 'border-black/50' : 'border-white/50'} text-[10px] md:text-xs font-mono uppercase tracking-widest shrink-0`}>
           <div className="opacity-50">
-            <ScrambleText text="+ DECIMAL SEPARATION AND PROPERTIES OF POLYMER 48" scrambleToEmpty={isProject} /><br/>
+            <span className="hidden md:inline"><ScrambleText text="+ DECIMAL SEPARATION AND PROPERTIES OF POLYMER 48" scrambleToEmpty={isProject} /><br/></span>
             <ScrambleText text="+ I/O TECHNICAL SYSTEMS™" scrambleToEmpty={isProject} />
           </div>
-          <div className="flex items-center gap-2">
-            <span className="opacity-50"><ScrambleText text="System Online" scrambleToEmpty={isProject} /></span>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="opacity-50 whitespace-nowrap"><ScrambleText text="System Online" scrambleToEmpty={isProject} /></span>
             <motion.div animate={{ opacity: isProject ? 0 : 1 }} className={`w-3 h-3 rounded-full border ${theme === 'light' ? 'border-black/50' : 'border-white/50'} flex items-center justify-center`}>
               <div className="w-1 h-1 bg-[#ff3333] rounded-full" />
             </motion.div>

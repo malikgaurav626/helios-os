@@ -123,22 +123,7 @@ export const PROJECTS: ProjectMeta[] = [
       'Achieved highly optimized inference times enabling efficient depth map estimation for 3D applications.'
     ]
   },
-  {
-    id: 'prj-alumni',
-    title: 'ALUMNI\nBACKEND',
-    blurb: 'Management System',
-    description: 'Backend services for an alumni management system, handling user data, authentication, and directory logic.',
-    accent: '#8800ff',
-    cityCoordinates: [800, -500, 100],
-    techStack: ['JavaScript', 'Node.js', 'Express'],
-    githubUrl: 'https://github.com/malikgaurav626/alumni-backend',
-    liveUrl: 'https://jitenderport.netlify.app/',
-    extendedDetails: [
-      'Engineered robust RESTful backend services to support an alumni management ecosystem.',
-      'Implemented secure authentication, session management, and encrypted data storage.',
-      'Designed scalable database schemas to handle large alumni directories and networking data.'
-    ]
-  },
+
   {
     id: 'prj-neonotes',
     title: 'NEONOTES',
