@@ -128,9 +128,9 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
         className="relative z-10 p-4 md:p-12 w-full h-full flex flex-col"
       >
         {/* Top Header */}
-        <header className="flex justify-between items-start border-b border-current pb-4 mb-16">
+        <header className="flex justify-between items-start border-b border-current pb-4 mb-16 shrink-0">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 border-2 border-current flex items-center justify-center p-1">
+            <div className="w-10 h-10 md:w-12 md:h-12 border-2 border-current flex items-center justify-center p-1 shrink-0">
               <motion.div 
                 className="w-full h-full border-current"
                 animate={{
@@ -148,13 +148,13 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
               />
             </div>
             <div>
-              <h1 className="text-2xl font-black uppercase tracking-widest mb-1">HELIOS_OS</h1>
-              <p className="text-xs font-mono opacity-50 uppercase tracking-widest">VER 4.8 // RECORD-TRI</p>
+              <h1 className="text-xl md:text-2xl font-black uppercase tracking-widest mb-1">HELIOS_OS</h1>
+              <p className="hidden md:block text-xs font-mono opacity-50 uppercase tracking-widest">VER 4.8 // RECORD-TRI</p>
             </div>
           </div>
 
-          <div className="flex flex-col items-end">
-            <div className="text-right font-mono text-xs uppercase tracking-widest opacity-50 mb-2 leading-relaxed whitespace-pre-line">
+          <div className="flex flex-col items-end shrink-0">
+            <div className="hidden md:block text-right font-mono text-xs uppercase tracking-widest opacity-50 mb-2 leading-relaxed whitespace-pre-line">
               <ScrambleText text={metaText} />
             </div>
             {/* Logo */}
