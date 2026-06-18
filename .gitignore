@@ -25,9 +25,8 @@ dist-ssr
 
 # Utility Scripts
 unpack.py
-project-builder
-project-builder/
+project-builder.md
 
-# Speckit
-*speckit*
-speckit/
+# Configs
+.specify/
+.specify
