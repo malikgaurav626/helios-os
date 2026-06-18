@@ -319,7 +319,7 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
         </main>
 
         {/* Footer */}
-        <footer className={`mt-auto pt-8 flex justify-between items-end border-t ${theme === 'light' ? 'border-black/50' : 'border-white/50'} text-[10px] md:text-xs font-mono uppercase tracking-widest shrink-0`}>
+        <footer className={`mt-auto pt-8 ${isProject ? 'hidden' : 'flex'} justify-between items-end border-t ${theme === 'light' ? 'border-black/50' : 'border-white/50'} text-[10px] md:text-xs font-mono uppercase tracking-widest shrink-0`}>
           <div className="opacity-50">
             <span className="hidden md:inline"><ScrambleText text="+ DECIMAL SEPARATION AND PROPERTIES OF POLYMER 48" scrambleToEmpty={isProject} /><br/></span>
             <ScrambleText text="+ I/O TECHNICAL SYSTEMS™" scrambleToEmpty={isProject} />
