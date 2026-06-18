@@ -21,6 +21,14 @@ export function App() {
     })
   }, [btnControls])
 
+  // Update favicon based on theme
+  useEffect(() => {
+    const link = document.querySelector("link[rel*='icon']") as HTMLLinkElement
+    if (link) {
+      link.href = currentTheme === 'light' ? '/favicon-light.svg' : '/favicon-dark.svg'
+    }
+  }, [currentTheme])
+
   const toggleTheme = () => {
     const newTheme = currentTheme === 'light' ? 'dark' : 'light'
     
@@ -62,7 +70,7 @@ export function App() {
             transition={{ duration: 2.5, ease: "easeInOut" }}
             onAnimationComplete={() => handleLayerComplete(layer.id)}
           >
-            <OSDesktop theme={layer.theme} />
+            <OSDesktop theme={layer.theme} isThemeTransition={!isFirst} />
             
             {/* The Toggle Button is placed INSIDE the layer so mix-blend-difference can mathematically invert the text correctly */}
             <div className="absolute inset-0 pointer-events-none z-50 flex items-center justify-center">

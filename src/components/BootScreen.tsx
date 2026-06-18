@@ -3,11 +3,14 @@ import { motion, AnimatePresence } from 'motion/react'
 import { useAppStore } from '@/store/useAppStore'
 
 const BOOT_SEQUENCE = [
-  'INITIALIZING SYSTEM MEMORY...',
-  'LOADING KERNEL MODULES...',
-  'MOUNTING VFS...',
-  'STARTING UI SUBSYSTEM...',
-  'ESTABLISHING CONNECTION TO MAINFRAME...',
+  'INITIALIZING HELIOS_OS...',
+  'MOUNTING NEURAL LINK: GAURAV MALIK',
+  'AUTHORIZATION ACCEPTED.',
+  'LOADING PROFILE DATA...',
+  'EDUCATION: IIIT SONEPAT [B.TECH CSE]',
+  'CURRENT ROLE: ASSOC. SOFTWARE ENG. @ MAQ SOFTWARE',
+  'LOADING CAPABILITIES...',
+  '>> C++, PYTHON, MERN, THREE.JS, WEB3',
   'SYSTEM READY.'
 ]
 
@@ -25,7 +28,7 @@ export function BootScreen() {
         clearInterval(interval)
         setTimeout(() => setBooted(true), 500)
       }
-    }, 300)
+    }, 150)
 
     return () => clearInterval(interval)
   }, [setBooted])
