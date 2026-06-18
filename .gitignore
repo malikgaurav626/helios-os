@@ -27,3 +27,7 @@ dist-ssr
 unpack.py
 project-builder
 project-builder/
+
+# Speckit
+*speckit*
+speckit/
