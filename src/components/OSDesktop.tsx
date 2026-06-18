@@ -319,7 +319,14 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
         </main>
 
         {/* Footer */}
-        <footer className={`mt-auto pt-8 ${isProject ? 'hidden' : 'flex'} justify-between items-end border-t ${theme === 'light' ? 'border-black/50' : 'border-white/50'} text-[10px] md:text-xs font-mono uppercase tracking-widest shrink-0`}>
+        <motion.footer 
+          animate={{
+            paddingTop: isProject ? "0.5rem" : "2rem",
+            opacity: isProject ? 0.5 : 1
+          }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className={`mt-auto flex justify-between items-end border-t ${theme === 'light' ? 'border-black/50' : 'border-white/50'} text-[10px] md:text-xs font-mono uppercase tracking-widest shrink-0`}
+        >
           <div className="opacity-50">
             <span className="hidden md:inline"><ScrambleText text="+ DECIMAL SEPARATION AND PROPERTIES OF POLYMER 48" scrambleToEmpty={isProject} /><br/></span>
             <ScrambleText text="+ I/O TECHNICAL SYSTEMS™" scrambleToEmpty={isProject} />
@@ -330,7 +337,7 @@ export function OSDesktop({ theme, isThemeTransition }: { theme?: 'light' | 'dar
               <div className="w-1 h-1 bg-[#ff3333] rounded-full" />
             </motion.div>
           </div>
-        </footer>
+        </motion.footer>
       </motion.div>
     </div>
   )
